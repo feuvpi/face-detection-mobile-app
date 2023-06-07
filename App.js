@@ -6,7 +6,7 @@ import * as FaceDetector from 'expo-face-detector'
 export default function App () {
   const [type, setType] = useState(CameraType.back)
   const [permission, requestPermission] = Camera.useCameraPermissions()
-
+  cosnt [pontos, setPontos] = useState(null)
   const [face, setFace] = useState(null)
 
   if (!permission) {
@@ -74,6 +74,9 @@ export default function App () {
           </TouchableOpacity>
         </View>
       </Camera>
+      <View style={{backgroundColor: '#FFF'}}>
+            <Text style={{padding:20, textAlign:'center', fontWeight: 'bold'}}>Quantidade de piscadas: {pontos}</Text>
+      </View>
     </View>
   )
 }
