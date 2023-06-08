@@ -6,7 +6,7 @@ import * as FaceDetector from 'expo-face-detector'
 export default function App () {
   const [type, setType] = useState(CameraType.back)
   const [permission, requestPermission] = Camera.useCameraPermissions()
-  cosnt [pontos, setPontos] = useState(null)
+  const [pontos, setPontos] = useState(null)
   const [face, setFace] = useState(null)
 
   if (!permission) {
@@ -29,6 +29,13 @@ export default function App () {
   const handleFacesDetected = ({ faces }) => {
     if(faces && faces.length > 0){
       setFace(faces[0]);
+
+      const right = faces[0].rightEyeOpenProbability
+      const left = faces[0].leftEyeOpenProbability
+
+      if(left <= 0.1 || right <= 0.1){
+        setPontos(pontos+1)
+      }
     }
   }
 
@@ -47,7 +54,7 @@ export default function App () {
         faceDetectorSettings={{
           mode: FaceDetector.FaceDetectorMode.fast,
           detectLandmarks: FaceDetector.FaceDetectorLandmarks.none,
-          runClassifications: FaceDetector.FaceDetectorClassifications.none,
+          runClassifications: FaceDetector.FaceDetectorClassifications.all,
           minDetectionInterval: 100,
           tracking: true
         }}
@@ -67,6 +74,8 @@ export default function App () {
             
           ></View>
         )}
+
+
 
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraType}>
